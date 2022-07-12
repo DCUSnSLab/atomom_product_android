@@ -1,0 +1,1 @@
+C:\Users\user\Desktop\test\Android_test\app\build\intermediates\cmake\debug\obj\armeabi-v7a
