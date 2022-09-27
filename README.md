@@ -22,16 +22,17 @@ OpenCV | [Click](https://drive.google.com/file/d/1-vAaR1IkPoVzcJ95ZQlAbs-cIzqLTA
 **This code has OpenCV built, so you do not need to install OpenCV.**
 
 
-* Follow the 4 steps below to get started.
+* Follow the 5 steps below to get started.
 ``` 
 1. Download Android Studio
-2. Input your server ip and port in ./app/src/main/java/com/example/roicamera/RoiActivity.java(line 95).
-3. Create Virtual Device or use your android device.
-4. Run 'app'
+2. Input your project path in ./app/src/main/cpp/CMakeLists.txt(line 8).
+3. Input your server ip and port in ./app/src/main/java/com/example/roicamera/RoiActivity.java(line 130).
+4. Create Virtual Device or use your android device.
+5. Run 'app'
 ```
 
 
 ### Sample Results
 | *test1* | *test2* | *test3* |
 | :-:         |     :-:      |     :-:      |
-|   <img src="https://user-images.githubusercontent.com/96579745/178452979-0ce2666f-3f52-43d1-a4e1-36faccd18867.gif" width="1000" alt="teaser">   |   <img src="https://user-images.githubusercontent.com/96579745/178453017-6c305d94-8bcf-4ea2-be11-0dc7dce88158.gif" width="1000" alt="teaser">   |   <img src="https://user-images.githubusercontent.com/96579745/178453029-dc9f3291-e21b-4f59-a99d-b72d0f8964cf.gif" width="1000" alt="teaser">   |
+|   <img src="https://user-images.githubusercontent.com/96579745/178452979-0ce2666f-3f52-43d1-a4e1-36faccd18867.gif" width="310" alt="teaser">   |   <img src="https://user-images.githubusercontent.com/96579745/178453017-6c305d94-8bcf-4ea2-be11-0dc7dce88158.gif" width="310" alt="teaser">   |   <img src="https://user-images.githubusercontent.com/96579745/178453029-dc9f3291-e21b-4f59-a99d-b72d0f8964cf.gif" width="310" alt="teaser">   |
