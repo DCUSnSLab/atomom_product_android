@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -20,9 +21,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 
 
 public class RoiActivity extends AppCompatActivity {
@@ -56,6 +59,7 @@ public class RoiActivity extends AppCompatActivity {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                b2.setEnabled(false);
                 new Thread(() -> {
 //                    td.SendJson();
                     roi_json = td.MakeJson();
@@ -65,6 +69,22 @@ public class RoiActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public class Cosmetic implements Serializable{
+        private static final long serialVersionUID = 1L;
+        private String rank;
+        private String brand;
+        private String name;
+        private String ingredients;
+
+
+        public Cosmetic(String rank, String brand, String name, String ingredients){
+            this.rank = rank;
+            this.brand = brand;
+            this.name = name;
+            this.ingredients = ingredients;
+        }
     }
 
     public static String convertString(String val) {
@@ -87,12 +107,27 @@ public class RoiActivity extends AppCompatActivity {
         String text="";
         String text2="";
         String page = "";
+        String time = "";
+
+        String p1;
+        String p2;
+        String p3;
+        String p4;
+        String ingredient = "";
+
+
+        String p1_ingredient;
+        String p2_ingredient;
+        String p3_ingredient;
+        String p4_ingredient;
 
         Intent intent = new Intent(getApplicationContext(),ResultActivity.class);
 
+
+
         try {
-            //URL url = new URL("http:// your ip : port /api");
-            URL url = new URL("http:// : /api");
+            long startTime = System.nanoTime();
+            URL url = new URL("http://your_ip:port/api");
             String lineEnd = "\r\n";
             String twoHyphens = "--";
             String boundary = "*****";
@@ -153,6 +188,8 @@ public class RoiActivity extends AppCompatActivity {
                 builder.append(str + "\n");
             }
 
+            long endTime = System.nanoTime();
+
             page = builder.toString();
             text2 = convertString(page);
             JSONObject jObject = new JSONObject(text2);
@@ -168,7 +205,7 @@ public class RoiActivity extends AppCompatActivity {
                 String inproducts = products.getString("products");
 
                 JSONObject product = new JSONObject(inproducts);
-                double similarity = product.getDouble("similarity");
+                String similarity = product.getString("similarity");
 
                 String mainproduct = product.getString("mainProduct");
 
@@ -176,12 +213,62 @@ public class RoiActivity extends AppCompatActivity {
                 String brand = inmainproduct.getString("brand");
                 String productname = inmainproduct.getString("productName");
 
-                text += "\n*******************************************************************\n"
-                        + "유사도 : " + similarity + "\n" + "브랜드 : " + brand + "\n" + "상품명 : " + productname
-                        + "\n*******************************************************************\n";
+                JSONArray arr_ingredients = inmainproduct.optJSONArray("ingredients");
+                JSONObject element;
+
+                for( int j = 0; j < arr_ingredients.length(); j++){
+//                    element = (JSONObject) arr_ingredients.opt(i);
+                    JSONObject in_ingredients = arr_ingredients.getJSONObject(j);
+                    ingredient += "- ";
+//                    ingredient += element.optString("english");
+                    ingredient += in_ingredients.getString("english");
+                    if(j < arr_ingredients.length() - 1 ){
+                        ingredient += "\n---------------------------------------------------------------\n";
+                    }
+                }
+
+                Cosmetic[] cosmetic = new Cosmetic[4];
+
+                cosmetic[i] = new Cosmetic(similarity, brand, productname, ingredient);
+
+                switch(i){
+                    case 0:
+                        p1 = "Similarity : " + cosmetic[0].rank + "\n" + "Brand : " + cosmetic[0].brand + "\n" + "Product Name : " + cosmetic[0].name;
+                        p1_ingredient = "Brand : " + cosmetic[0].brand + "\n" + "Product Name : " + cosmetic[0].name + "\n\n\n" + "Ingredients : \n\n" + cosmetic[0].ingredients;
+                        intent.putExtra("P1", p1);
+                        intent.putExtra("cosmetic1", p1_ingredient);
+                        break;
+                    case 1:
+                        p2 = "Similarity : " + cosmetic[1].rank + "\n" + "Brand : " + cosmetic[1].brand + "\n" + "Product Name : " + cosmetic[1].name;
+                        p2_ingredient = "Brand : " + cosmetic[1].brand + "\n" + "Product Name : " + cosmetic[1].name + "\n\n\n" + "Ingredients : \n\n" + cosmetic[1].ingredients;
+                        intent.putExtra("P2", p2);
+                        intent.putExtra("cosmetic2", p2_ingredient);
+                        break;
+                    case 2:
+                        p3 = "Similarity : " + cosmetic[2].rank + "\n" + "Brand : " + cosmetic[2].brand + "\n" + "Product Name : " + cosmetic[2].name;
+                        p3_ingredient = "Brand : " + cosmetic[2].brand + "\n" + "Product Name : " + cosmetic[2].name + "\n\n\n" + "Ingredients : \n\n" + cosmetic[2].ingredients;
+                        intent.putExtra("P3", p3);
+                        intent.putExtra("cosmetic3", p3_ingredient);
+                        break;
+                    case 3:
+                        p4 = "Similarity : " + cosmetic[3].rank + "\n" + "Brand : " + cosmetic[3].brand + "\n" + "Product Name : " + cosmetic[3].name;
+                        p4_ingredient = "Brand : " + cosmetic[3].brand + "\n" + "Product Name : " + cosmetic[3].name + "\n\n\n" + "Ingredients : \n\n" + cosmetic[3].ingredients;
+                        intent.putExtra("P4", p4);
+                        intent.putExtra("cosmetic4", p4_ingredient);
+                        break;
+                }
+
+
             }
 
+
+            long lTime = endTime - startTime;
+            text += "Time Check : " + lTime/1000000000.0 + "(s)";
+
             intent.putExtra("text", text);
+
+//            intent.putExtra("time", time);
+
 
         } catch (MalformedURLException e) { // for URL.
             text=text+"Malformed URL Exception : \n"+e;
