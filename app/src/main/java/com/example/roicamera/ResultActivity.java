@@ -26,21 +26,6 @@ public class ResultActivity extends AppCompatActivity {
     String details3;
     String details4;
 
-//    public class Cosmetic implements Serializable {
-//        private static final long serialVersionUID = 1L;
-//        private String rank;
-//        private String brand;
-//        private String name;
-//        private String ingredients;
-//
-//
-//        public Cosmetic(String rank, String brand, String name, String ingredients){
-//            this.rank = rank;
-//            this.brand = brand;
-//            this.name = name;
-//            this.ingredients = ingredients;
-//        }
-//    }
 
     String p1_detail;
     String p2_detail;

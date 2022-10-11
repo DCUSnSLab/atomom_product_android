@@ -51,7 +51,6 @@ public class TouchDraw extends View {
         paint.setStyle(Paint.Style.STROKE); //안의 내용을 채우지 않고 외곽선만 그림
         paint.setStrokeJoin(Paint.Join.ROUND); //
     }
-    
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -118,4 +117,3 @@ public class TouchDraw extends View {
     }
 
 }
-

@@ -127,7 +127,8 @@ public class RoiActivity extends AppCompatActivity {
 
         try {
             long startTime = System.nanoTime();
-            URL url = new URL("http://your_ip:port/api");
+
+            URL url = new URL("http:// your ip : port /api");
             String lineEnd = "\r\n";
             String twoHyphens = "--";
             String boundary = "*****";
