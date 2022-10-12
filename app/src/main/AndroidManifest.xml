@@ -41,7 +41,6 @@
         </activity>
         <activity android:name=".RoiActivity"/>
         <activity android:name=".ResultActivity"/>
-        <activity android:name=".IngredientActivity"/>
     </application>
 
 </manifest>

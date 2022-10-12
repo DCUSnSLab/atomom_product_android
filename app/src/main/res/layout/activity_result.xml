@@ -9,39 +9,18 @@
     >
 
 
-    <TextView
-        android:id="@+id/p_details1"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textSize="25sp" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/p_details2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textSize="25sp" />
+        <TextView
+            android:id="@+id/img_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textSize="25sp" />
 
-    <TextView
-        android:id="@+id/p_details3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textSize="25sp" />
-
-    <TextView
-        android:id="@+id/p_details4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textSize="25sp" />
-
-    <TextView
-        android:id="@+id/img_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textSize="25sp" />
+    </ScrollView>
 
 </LinearLayout>
