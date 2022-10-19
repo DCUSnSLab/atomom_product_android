@@ -1,17 +1,13 @@
 package com.example.roicamera;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,8 +21,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageSwitcher;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -39,12 +33,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,8 +43,9 @@ import static android.Manifest.permission.CAMERA;
 public class MainActivity extends AppCompatActivity
         implements CameraBridgeViewBase.CvCameraViewListener2{
 
+    private final long finishtimeed = 1000;
+    private long presstime = 0;
     private final int PICK_IMAGE = 1111;
-    private static final int PICK_IMAGE_REQUEST = 0;
     private static final String TAG = "camera";
     private Mat matInput;
     private Mat m_matRoi;
@@ -123,8 +113,6 @@ public class MainActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
-//        Button  Btn = (Button) findViewById(R.id.btn_capture);
-//        Btn.setEnabled(true);
 
         if (!OpenCVLoader.initDebug()) {
             Log.d(TAG, "onResume :: Internal OpenCV library not found.");
@@ -309,17 +297,13 @@ public class MainActivity extends AppCompatActivity
 
             gallery_img = null;
             try {
-//                gallery_img = Bitmap.createBitmap(m_matRoi.cols(),m_matRoi.rows(),Bitmap.Config.ARGB_8888);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-//                    gallery_img = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), selectedImage));
                     bmp_result = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), selectedImage));
                     gallery_img = Bitmap.createScaledBitmap(bmp_result, m_matRoi.cols(), m_matRoi.rows(), true);
                 } else {
-//                    gallery_img = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     bmp_result = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     gallery_img = Bitmap.createScaledBitmap(bmp_result, m_matRoi.cols(), m_matRoi.rows(), true);
                 }
-//                gallery_img = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
 
                 Intent intent = new Intent(getApplicationContext(),RoiActivity.class);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -329,11 +313,8 @@ public class MainActivity extends AppCompatActivity
                 byte[] byteArray = stream.toByteArray();
                 intent.putExtra("roi",byteArray);
 
-
-//            Btn.setEnabled(false);
                 startActivity(intent);
 
-//                imageview1.setImageBitmap(bitmap);
             }catch(Exception e){
                 Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
             }
@@ -344,5 +325,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    // 뒤로가기 두번 누를시 종료
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - presstime;
+
+        if (0 <= intervalTime && finishtimeed >= intervalTime)
+        {
+            finish();
+        }
+        else
+        {
+            presstime = tempTime;
+            Toast.makeText(getApplicationContext(), "한번더 누르시면 앱이 종료됩니다", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }
